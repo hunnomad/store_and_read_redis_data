@@ -1,9 +1,9 @@
 <?php
 
-# Fejlesztői cucc, hibajelentés be/ki ----------------------------------------------------
+# Developer stuff, bug reporting on/off ----------------------------------------------------
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
-# Fejlesztői cucc, hibajelentés be/ki ----------------------------------------------------
+# Developer stuff, bug reporting on/off ----------------------------------------------------
 
 # Set timezone ---------------------------------------------------------------------------
 date_default_timezone_set("Europe/Budapest");
@@ -28,7 +28,7 @@ if (class_exists('Redis'))
     {
     
         $redis = new Redis();
-        $redis->connect($_ENV['REDIS_HOST'],$_ENV['REDIS_PORT']); // Redis szerver elérési adatai
+        $redis->connect($_ENV['REDIS_HOST'],$_ENV['REDIS_PORT']); // Redis server access data
         $redis->auth($_ENV['REDIS_PASS']);
 
         if($redis->llen($key)>0)
@@ -43,21 +43,22 @@ if (class_exists('Redis'))
                 print_r($data);
                 echo "</pre>";
     
-                // // Feldolgozza az üzenetet
+                // // Process the message
                 // if (processMessage($data))
                 // {
-                //     // Sikeres feldolgozás
+                //     // Successful processing
     
+                // $redis->lrem($key, 0, $data); // Delete the first item from the list
                 // }
                 // else
                 // {
-                //     // Sikertelen feldolgozás
+                //     // Unsuccessful processing
                 //     $redis->del('messages', $message[0]);
                 // }
             }
             else
             {
-                // Időtúllépés
+                // Timeout
                 
             }
         }
@@ -69,12 +70,12 @@ if (class_exists('Redis'))
     catch (Exception $e)
     {
         // Hiba kezelése
-        echo 'Hiba történt: '.$e->getMessage();
+        echo 'An error occurred.: '.$e->getMessage();
     }
 }
 else
 {
-    exit("Redis osztály nem elérhető.");
+    exit("Redis class is not available.");
 }
 
 ?>
